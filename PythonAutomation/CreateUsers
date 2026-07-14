@@ -1,1 +1,65 @@
+#csv file was used to extract employee information
+import csv
 
+# Open the file using a context manager ('with') to handle closing it automatically, saves cpu
+with open('employees.csv', mode='r', encoding='utf-8') as file:
+    csv_reader = csv.reader(file)
+
+    # Optional: Skip the header row if you don't want to print it
+    header = next(csv_reader)
+
+    IT = 0
+    HR = 0
+    Finance = 0
+    Cloud = 0
+    Security = 0
+    Employees = 0
+    names = []
+    emails = []
+    duplicateName = []
+    duplicateEmail = []
+
+
+    # Loop through the remaining rows
+    for index, row in enumerate(csv_reader, start=1): #Used index for numbering and start=1 to start count at 1
+        Employees += 1 #Used this instead of index so I could pass it outside the loop
+        print('=' * 40)
+        print(f'Employee #{index}\n')
+        print(f'Name: {row[0]} {row[1]}\nUsername: {row[2]}\nDepartment: {row[4]}\nLocation: {row[6]}\nRole: {row[5]}')
+        print()
+        if row[4] == 'IT':
+            IT += 1
+        elif row[4] == 'HR':
+            HR += 1
+        elif row[4] == 'Finance':
+            Finance += 1
+        elif row[4] == 'Cloud':
+            Cloud += 1
+        elif row[4] == 'Security':
+            Security += 1
+        if row[2] not in names:
+            names.append(row[2])
+        else:
+            duplicateName.append(row[2])
+        if row[3] not in emails:
+            emails.append(row[3])
+        else:
+            duplicateEmail.append(row[3])
+
+    if duplicateName == []:
+        duplicateName = None
+    if duplicateEmail == []:
+        duplicateEmail = None
+    print(f'''...
+
+Summary
+    
+Total Employees: {Employees}
+    
+Department
+    
+IT: {IT}\nHR: {HR}\nFinance: {Finance}\nCloud: {Cloud}\nSecurity: {Security}
+
+Duplicate Username: {duplicateName}
+
+Duplicate Emails: {duplicateEmail}''')
